@@ -6,6 +6,8 @@ The hello-api folder contains a nodejs api with a dockerfile. CD into the hello-
 
 ### 2) Save your image as a compressed file ready to import into Microk8s
 
+At this point, verify microk8s is running via "microk8s start". Linux (Debian) - you may need to add a firewall rule (or disable it temporarily via "sudo ufw disable").
+
 You can import docker images into Microk8s as .tar files.
 - Use "docker save hello-api > hello-api.tar" to create the compressed file.
 - Use "Microk8s ctr image import hello-api.tar" to import it.
@@ -14,19 +16,20 @@ You can import docker images into Microk8s as .tar files.
 
 "Microk8s ctr images ls | grep hello-api"
 
-### 4) Create your kube config file
+### 4) Apply the kube deployment config
 
 This file specifies the node setup, which containers should be created from what images, and which ports they should use. 
 
-- "touch config.yaml"
-- Paste the content from deployment.yaml in the root project directory.
+"microk8s kubectl apply -f deployment.yaml"
 
-### 5) Apply the kube config
-
-"microk8s kubectl apply -f config.yaml"
-
-### 6) Expose the deployment as a service
+### 5) Expose the deployment as a service
 
 "microk8s kubectl expose deployment hello-api-deployment --type=NodePort --port=80 --name=hello-api-service"
 
+### 6) Verify the deployment
+"microk8s kubectl get all" will display a status report of your running kubernetes cluster, with any deployments & services listed.
 
+### 7) (Optional) Forward the application ports
+You may need to forward ports from your container port to the application port, in this case from 80 to 3000.
+
+"sudo microk8s kubectl port-forward deployment.apps/hello-api-deployment 80:3000"
