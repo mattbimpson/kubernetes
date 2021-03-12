@@ -1,0 +1,14 @@
+{
+  "name": "hello-api",
+  "version": "1.0.0",
+  "description": "a hello world api",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "matt bimpson",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
